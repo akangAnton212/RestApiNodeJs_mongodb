@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 
 const productRoutes = require('./api/routes/products');
 const ordersRoutes = require('./api/routes/orders');
+const userRoutes = require("./api/routes/user")
 
 app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({
@@ -34,6 +35,7 @@ app.use((req,res, next) => {
 
 app.use('/products', productRoutes);
 app.use('/orders', ordersRoutes);
+app.use('/user', userRoutes);
 
 mongoose.connect(
     'mongodb+srv://admin:'
