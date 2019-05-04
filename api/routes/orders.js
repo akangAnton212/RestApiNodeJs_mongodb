@@ -4,8 +4,9 @@ const mongoose = require('mongoose');
 
 const Order = require('../models/order');
 const Product = require('../models/product');
+const auth = require('../middleware/check_auth');
 
-router.get('/', (req, res,  next) => {
+router.get('/', auth, (req, res,  next) => {
     Order.find()
    .select('product qty _id')
    .populate('product', 'name price')
@@ -48,7 +49,7 @@ router.get('/', (req, res,  next) => {
    });
 });
 
-router.post('/', async (req, res, next) => {
+router.post('/', auth, async (req, res, next) => {
     var status_product;
 
     Product.findById(req.body.productId)
@@ -111,7 +112,7 @@ router.post('/', async (req, res, next) => {
       
 });
 
-router.get('/:orderID', (req, res, next) => {
+router.get('/:orderID', auth, (req, res, next) => {
     const id = req.params.orderID;
     Order.findById(id)
         .select('product qty _id')

@@ -3,8 +3,9 @@ const router = express.Router();
 const mongoose = require('mongoose');
 
 const Product = require('../models/product');
+const auth = require('../middleware/check_auth');
 
-router.get('/', (req, res,  next) => {
+router.get('/', auth,(req, res,  next) => {
    Product.find()
    .select('name price _id')
    .exec()
@@ -34,7 +35,7 @@ router.get('/', (req, res,  next) => {
    });
 });
 
-router.post('/', async (req, res, next) => {
+router.post('/', auth, async (req, res, next) => {
     const session = await mongoose.startSession();
     const product = new Product({
         _id: new mongoose.Types.ObjectId(),
@@ -65,7 +66,7 @@ router.post('/', async (req, res, next) => {
     }   
 });
 
-router.get('/:productID', (req, res, next) => {
+router.get('/:productID', auth, (req, res, next) => {
     const id = req.params.productID;
     Product.findById(id)
     .select('name price _id')
@@ -96,7 +97,7 @@ router.get('/:productID', (req, res, next) => {
     });
 });
 
-router.delete('/:productID', (req, res, next) => {
+router.delete('/:productID', auth, (req, res, next) => {
     const id = req.params.productID;
     Product.remove({ _id:id })
     .exec()
@@ -116,7 +117,7 @@ router.delete('/:productID', (req, res, next) => {
     });
 });
 
-router.post('/ubahData', async (req, res, next) => {
+router.post('/ubahData', auth, async (req, res, next) => {
     const session = await mongoose.startSession();
     const id = req.body.id
 
